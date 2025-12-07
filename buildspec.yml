@@ -1,23 +1,10 @@
 version: 0.2
 
-env:
-  variables:
-    S3_BUCKET_NAME: "daveberriosresume.com"
-    CLOUDFRONT_DISTRIBUTION_ID: "E67ZQHBHTV5UT"
-
 phases:
-  install:
-    commands:
-      - echo "Nothing to install for static site"
   build:
     commands:
-      - echo "No build step required for static HTML"
-  post_build:
-    commands:
-      - echo "Syncing website to S3..."
-      - aws s3 sync . s3://$S3_BUCKET_NAME --delete --exclude ".git/*" --exclude "buildspec.yml"
-      - echo "Invalidating CloudFront cache..."
-      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+      - echo "Syncing files to S3 bucket..."
+      - aws s3 sync . s3://daveberriosresume.com/ --delete
 
 artifacts:
   files:
